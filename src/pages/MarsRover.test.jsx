@@ -4,7 +4,7 @@ import MarsRover from './MarsRover';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import 'whatwg-fetch';
 
-describe('TextContainer test', () => {
+describe('Mars rover test', () => {
   let wrapper;
 
   beforeAll(async () => {
@@ -17,7 +17,7 @@ describe('TextContainer test', () => {
 
   });
 
-  test('should render text props and perform button click', async () => {
+  test('should render elements and perform button click', async () => {
 
       const rightBtn = await waitFor(() => wrapper.container.querySelector('.next'));
       const leftBtn = await waitFor(() => wrapper.container.querySelector('.prev'));
