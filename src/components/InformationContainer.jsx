@@ -13,7 +13,7 @@ const InformationContainer =  React.memo(({url,title,copyright, date,hdurl, expl
             <h3>Date: {date}</h3>
             <TextContainer text={explanation}/>
             <br />
-            {copyright ? (<span>&copy; {copyright}</span>): (<span>unknown copyright</span>)} 
+            {copyright ? (<span role='copyright'>&copy; {copyright}</span>): (<span>unknown copyright</span>)} 
         </div>
             
     </div>

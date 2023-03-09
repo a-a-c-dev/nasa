@@ -13,7 +13,7 @@ function ApolloLaunch() {
       <>
         <Navigation/>
         <Header text='Apollo Launch'/>
-        <p>please wait while the data is loading</p>
+          <p>please wait while the data is loading</p>
         <Spinner/>
       </>
     )
@@ -23,7 +23,6 @@ function ApolloLaunch() {
 
   return (   
     <>
-  
     <Navigation/>
     <Header text='Apollo Launch'/>
     <div className='main-container apollo'>  
@@ -32,7 +31,7 @@ function ApolloLaunch() {
                          <ModalOverlay
                           key={value.data[0].title}
                           toggle={show =>         
-                          <div className='card' onDoubleClick={()=> show()}>
+                          <div className='card' onDoubleClick={()=> show()} >
                               <ImageContainer imageSrc={value?.links[0]?.href} imagedesc={value?.data[0]?.description}/>
                               <div className='info-container'>
                                 <h3>date: {value?.data[0]?.date_created.slice(0,10)}</h3>
@@ -55,7 +54,7 @@ function ApolloLaunch() {
                                       </div>                    
                                   </div>
                                     
-                                </Modal>
+                               </Modal>
                           )}
                     />
                                 

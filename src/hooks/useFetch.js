@@ -1,4 +1,3 @@
-import { set } from 'lodash';
 import {useEffect,useState, useMemo} from 'react';
 import useLocalStorage from './useLocalStorage';
 
@@ -15,6 +14,7 @@ function useFetch(url,storageKey) {
             setError(data.error)
           }
           setData(()=>data) 
+
         }
         catch(err){
             setError(()=>err);
@@ -29,7 +29,6 @@ function useFetch(url,storageKey) {
       useEffect(()=>{
         let isMounted = true;
         if(isMounted){
-
           fetchData()
         }
         return () => {

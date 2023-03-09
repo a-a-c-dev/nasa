@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import {Link } from 'react-router-dom';
-import NasaIcon from  '../assets/nasa.svg'
+import NasaIcon from  '../assets/nasa.svg';
 
 const Navigation =React.memo( () => {
   const [isActive, setISActive] = useState(false)

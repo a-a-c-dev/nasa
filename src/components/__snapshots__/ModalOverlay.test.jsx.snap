@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Modal component > The component should render in body when open 1`] = `
+<body>
+  <div />
+</body>
+`;
