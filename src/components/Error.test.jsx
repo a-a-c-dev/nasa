@@ -7,6 +7,6 @@ describe('Error test', () => {
   
     const wrapper = render(<Error error="error" />);
     const div = wrapper.container.querySelector('div');
-    expect(div?.textContent).toBe('something went wrong ! please try later  error');
+    expect(div?.textContent).toBe('Something went wrong! Please try later  error');
   });
 });

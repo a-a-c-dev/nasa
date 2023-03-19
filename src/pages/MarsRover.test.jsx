@@ -13,15 +13,14 @@ describe('Mars rover test', () => {
         <MarsRover />
       </BrowserRouter>
     );
-    await waitForElementToBeRemoved(() => wrapper.container.querySelector(".loader"), { timeout: 5000, onError: (error) => console.error(error) });
-
   });
 
   test('should render elements and perform button click', async () => {
+    waitForElementToBeRemoved(screen.getByText("Loading...")).then(async () =>{
 
       const rightBtn = await waitFor(() => wrapper.container.querySelector('.next'));
       const leftBtn = await waitFor(() => wrapper.container.querySelector('.prev'));
-
+  
       const cards = await waitFor(()=>wrapper.container.querySelectorAll('.card'));
       expect(cards.length).toBe(30)
       expect(cards[0].classList.contains('active')).toBe(true);
@@ -40,6 +39,9 @@ describe('Mars rover test', () => {
       fireEvent.click(leftBtn);          
       
       expect(cards[29].classList.contains('active')).toBe(true);
+    }
+    
+  );
 
   });
 });

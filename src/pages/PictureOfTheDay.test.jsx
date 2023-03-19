@@ -19,6 +19,6 @@ describe('Picture Of The Day test', () => {
 
   test('should render elements ', async () => { 
             const cards = await waitFor(()=>wrapper.container.querySelectorAll('.card'));
-            expect(cards.length).toBe(9);
+            expect(cards.length).toBe(11);
   });
 });
