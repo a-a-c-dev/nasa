@@ -28,9 +28,7 @@ function MarsRover() {
     date.getDate(),
     date.getFullYear(),
   ];
-  const startingDate:string = day-10>0 ?
-    `${year}-${month+1<12?month+1>=10?month+1:`0${month+1}`:'01'}-${day>10?day-10>=10?day-10:`0${day-10}`:'01'}`
-    :`${month>=0?year:year-1}-${month===0?12:month<10?`0${month}`:month}-${month>=0?20 :day>10?day-10>=10?day-10:`0${day-10}`:'01'}`;
+  const startingDate:string = '2023-03-08'
   const [startDate, setStartDate] = useState<string>(startingDate)
   const dateInputRef = useRef<HTMLInputElement>(null);
   let url:string = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=${startDate}&api_key=${apikey}`;
@@ -52,8 +50,8 @@ function MarsRover() {
       const res = await fetch(url)
       const data = await res.json();
       if(data.error)setError(data.error);
+      else if(Object.keys(data).length>0){
       
-      else if(data){
         const images = Object.values<MarsRoverData[]>(data)[0].slice(0,30).reverse();
         setDataCollection(()=>[...images]);
       }
@@ -71,7 +69,7 @@ function MarsRover() {
     if(!dataCollection.length || startDate !== dataCollection[0].earth_date){
       fetchData()
     }
-    },[startDate, dataCollection])
+    },[startDate, dataCollection.length])
     
     if(loading && !dataCollection.length){
       return(
