@@ -21,17 +21,17 @@ interface MarsRoverData {
 
 
 function MarsRover() {  
-  const apikey:string = import.meta.env.VITE_NASA_PROJECT_API_KEY;
   const date = new Date();
   const [month, day, year] = [
     date.getMonth(),
     date.getDate(),
     date.getFullYear(),
   ];
-  const startingDate:string = '2023-03-08'
+  const startingDate:string = day-10>0 ?
+  `${year}-${month+1<12?month+1>=10?month+1:`0${month+1}`:'01'}-${day>10?day-10>=10?day-10:`0${day-10}`:'01'}`
+  :`${month>=0?year:year-1}-${month===0?12:month<10?`0${month}`:month}-${month>=0?20 :day>10?day-10>=10?day-10:`0${day-10}`:'01'}` ?? '';
   const [startDate, setStartDate] = useState<string>(startingDate)
   const dateInputRef = useRef<HTMLInputElement>(null);
-  let url:string = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=${startDate}&api_key=${apikey}`;
   const [dataCollection, setDataCollection]  = useLocalStorage<MarsRoverData[]>('Mars-Rover', [])
   const [loading, setLoading] = useState<Boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -47,14 +47,17 @@ function MarsRover() {
   const fetchData = useMemo(()=> async () => {
     setLoading(()=>true);
     try{
-      const res = await fetch(url)
+      const res = await fetch(`/getMarsRoverData?date=${startDate}`);
       const data = await res.json();
-      if(data.error)setError(data.error);
+      if(data.error){
+        setError(data.error);
+      }
       else if(Object.keys(data).length>0){
-      
         const images = Object.values<MarsRoverData[]>(data)[0].slice(0,30).reverse();
         setDataCollection(()=>[...images]);
+        setError(null)
       }
+      if(data.photos.length === 0)setError('There is a problem with this specific date, please try with another date' );
     }
     catch(err:any){
         setError(()=>err);
@@ -63,7 +66,7 @@ function MarsRover() {
     finally{
         setLoading(false)
     }
-  },[url]);
+  },[startDate]);
 
   useEffect(()=>{
     if(!dataCollection.length || startDate !== dataCollection[0].earth_date){
@@ -81,7 +84,6 @@ function MarsRover() {
         </>
       )
     }
-    if(error)return <Error error={error}/>
     return (
       <>
       <Navigation/>
@@ -90,7 +92,7 @@ function MarsRover() {
             <span>Pick a date:</span>    
             <Calendar startDate={startDate} min='2017-01-01' max={startingDate} dateInputRef={dateInputRef} handleChange={(value:string)=>setStartDate(value)}/>
           </div>
-       
+          {error ? <Error error={error}/>: null} 
           <div className='main-container mars'>
             {dataCollection && dataCollection.map((value:MarsRoverData, index:number) => (   
               <div className={index===currentIndex?'card active':'card'} key={value.id}>

@@ -15,25 +15,24 @@ interface PictureOfTheDayProps{
 
 function PictureOfTheDay() {
 
-    const apikey = import.meta.env.VITE_NASA_PROJECT_API_KEY;
     const date = new Date();
     const [month, day, year] = [
       date.getMonth(),
       date.getDate(),
       date.getFullYear(),
     ];
+    const endDate = `${year}-${month+1<12?month+1:1}-${day>10?day:`0${day}`}`
     const [autoSearch, setAutoSearch] = useState<string>('')
-    const [startDate, setStartDate] = useState<string>(day===1? `${year}-${month<12?month:1 }-${day>10?day-10:1}`: `${year}-${month+1<12?month+1:1 }-${day>10?day-10:1}`)
+    const [startDate, setStartDate] = useState<string>(day===1? `${year}-${month<12?month:1 }-${day>10?day-10:1}`: `${year}-${month+1<12?month+1:1 }-${day>10?(day-10>10?day-10:`0${day-10}`):`01`}`)
     const dateInputRef = useRef<HTMLInputElement>(null);
     const [dataCollection, setDataCollection]  = useLocalStorage<PictureOfTheDayProps[]>('NASA-Picture-Of-The-Day', [])
     const [loading, setLoading] = useState<boolean|null>(null);
     const [error, setError] = useState<string|null>(null);
-    let url = `https://api.nasa.gov/planetary/apod?api_key=${apikey}&start_date=${startDate}&end_date=${year}-${month+1<12?month+1:1}-${day}`;
     const filteredData:PictureOfTheDayProps[] = dataCollection.filter((value:PictureOfTheDayProps) => value.title.toLowerCase().includes(autoSearch.toLowerCase()));
     const fetchData = useMemo(()=> async () => {
       setLoading(()=>true)
       try{
-        const res = await fetch(url)
+        const res = await fetch(`/getPictureOfTheDayData?startDate=${startDate}&endDate=${endDate}`)
         const data = await res.json();
         if(data.error)setError(()=>data.error);
         else if(data){
@@ -49,7 +48,7 @@ function PictureOfTheDay() {
           setLoading(()=>false)
       }
       
-    },[url]);
+    },[startDate]);
     useEffect(()=>{
       if(!dataCollection.length || startDate!==dataCollection[dataCollection.length-1]?.date){
         fetchData()

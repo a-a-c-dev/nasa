@@ -30,9 +30,7 @@ interface NearEarthObjectsData {
 
 
 function NearEarthObjects() {
-    const apikey = import.meta.env.VITE_NASA_PROJECT_API_KEY;
-    let url = `https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=${apikey}`
-    const {data,error, loading} = useFetch<Fetch>(url, 'Near-Earth-Objects')
+    const {data,error, loading} = useFetch<Fetch>(`/.netlify/functions/getNearEarthObjects`, 'Near-Earth-Objects')
     const nearEarthObjects:NearEarthObjectsData[] = data?.near_earth_objects ?? []
     if(loading){
       return(

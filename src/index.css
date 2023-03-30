@@ -591,6 +591,20 @@ input[type="text"]{
   justify-content: center;
 }
 
+
+.nav-item{
+  position: relative;
+}
+.nav-item::after{
+  position: absolute;
+  content: '◖';
+  font-size:16px;
+  color: #0B3D91;
+  top: 50%;
+  right: -1em;
+  transform: translate(0,-50%);
+}
+
 @media screen and (max-width: 499px) {
   .card:hover{
     scale: 1;
@@ -725,8 +739,10 @@ input[type="text"]{
   .nav-item{
     margin: 16px 0;
   }
+
+
   .nav-menu.active{
-    left: 0
+    left: 0;
   }
    
 }

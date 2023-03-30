@@ -20,29 +20,17 @@ interface Project{
 
 
 function NasaProjects() {
-    const apikey = import.meta.env.VITE_NASA_PROJECT_API_KEY;
 
     const [dataCollection, setDataCollection]  = useLocalStorage<Projects[]>('NASA-Project', [])
     const [loading, setLoading] = useState<boolean|null>(null);
     const [error, setError] = useState<string|null>(null);
     
-    const urls = [
-      `https://api.nasa.gov/techport/api/projects/10002?api_key=${apikey}`,
-      `https://api.nasa.gov/techport/api/projects/10000?api_key=${apikey}`,
-      `https://api.nasa.gov/techport/api/projects/10001?api_key=${apikey}`,
-      `https://api.nasa.gov/techport/api/projects/17791?api_key=${apikey}`,
-      `https://api.nasa.gov/techport/api/projects/17792?api_key=${apikey}`,
-      `https://api.nasa.gov/techport/api/projects/17794?api_key=${apikey}`,
-      `https://api.nasa.gov/techport/api/projects/17795?api_key=${apikey}`,
-      `https://api.nasa.gov/techport/api/projects/17797?api_key=${apikey}`,
-      `https://api.nasa.gov/techport/api/projects/17798?api_key=${apikey}`,
-      `https://api.nasa.gov/techport/api/projects/17780?api_key=${apikey}`
-   ]
+  
     const fetchData = useMemo(()=> async () => {
       setLoading(true)
         try{
-          const res = await Promise.all(urls.map(url => fetch(url)))
-          const projects:Projects[] = await Promise.all(res.map(value=> value.json())) 
+          const res = await fetch('/getNasaProjectsData')
+          const projects:Projects[] = await res.json() 
           if(projects[0].error)setError(projects[0].error)
           else if(projects.length){
             setDataCollection(()=>[...projects])}
