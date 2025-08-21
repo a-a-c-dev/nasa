@@ -21,9 +21,9 @@ function PictureOfTheDay() {
       date.getDate(),
       date.getFullYear(),
     ];
-    const endDate = `${year}-${month+1<12?month+1:1}-${day>10?day:`0${day}`}`
+    const endDate = `${year}-${month+1<12?month+1:1}-${day>=10?day:`0${day}`}`
     const [autoSearch, setAutoSearch] = useState<string>('')
-    const [startDate, setStartDate] = useState<string>(day===1? `${year}-${month<12?month:1 }-${day>10?day-10:1}`: `${year}-${month+1<12?month+1:1 }-${day>10?(day-10>10?day-10:`0${day-10}`):`01`}`)
+    const [startDate, setStartDate] = useState<string>(day===1? `${year}-${month<12?month:1 }-${day>10?day-10:1}`: `${year}-${month+1<12?month+1:1 }-${day>10?(day-10>=10?day-10:`0${day-10}`):`01`}`)
     const dateInputRef = useRef<HTMLInputElement>(null);
     const [dataCollection, setDataCollection]  = useLocalStorage<PictureOfTheDayProps[]>('NASA-Picture-Of-The-Day', [])
     const [loading, setLoading] = useState<boolean|null>(null);
@@ -32,9 +32,23 @@ function PictureOfTheDay() {
     const fetchData = useMemo(()=> async () => {
       setLoading(()=>true)
       try{
-        const res = await fetch(`/getPictureOfTheDayData?startDate=${startDate}&endDate=${endDate}`)
+        
+        const res = await fetch(`/.netlify/functions/getPictureOfTheDayData?startDate=${startDate}&endDate=${endDate}`)
+        console.log('1',res);
+        if(!res.ok) {
+          console.log('2',res);
+          setError('something happend');
+          return
+        }     
+                console.log(res.body, '3')
+
         const data = await res.json();
-        if(data.error)setError(()=>data.error);
+        console.log(data, '4')
+        if(data.error){
+          console.log(data.error)
+          setError(()=>data.error);
+          
+        }
         else if(data){
           setDataCollection(()=>[...data].reverse());
         }

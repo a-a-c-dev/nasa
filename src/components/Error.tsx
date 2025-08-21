@@ -6,7 +6,8 @@ const Error = ({ error }:ErrorProps) => {
   return (
     <div className="error-container">
       <p>
-        Something went wrong! Please try later <br /> {`${error}`}
+        Something went wrong! Please try later <br />
+         {`${error}`}
       </p>
     </div>
   );

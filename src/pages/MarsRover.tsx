@@ -27,9 +27,8 @@ function MarsRover() {
     date.getDate(),
     date.getFullYear(),
   ];
-  const startingDate:string = day-10>0 ?
-  `${year}-${month+1<12?month+1>=10?month+1:`0${month+1}`:'01'}-${day>10?day-10>=10?day-10:`0${day-10}`:'01'}`
-  :`${month>=0?year:year-1}-${month===0?12:month<10?`0${month}`:month}-${month>=0?20 :day>10?day-10>=10?day-10:`0${day-10}`:'01'}` ?? '';
+  const startingDate:string = day-10>0 ?`${year}-${month+1<12?month+1>=10?month+1:`0${month+1}`:'01'}-${day>10?day-10>=10?day-10:`0${day-10}`:'01'}`
+  :`${month>=0?year:year-1}-${month===0?12:month<10?`0${month}`:month}-${month>=0?20 :day>10?day-10>=10?day-10:`0${day-10}`:'01'}` || '';
   const [startDate, setStartDate] = useState<string>(startingDate)
   const dateInputRef = useRef<HTMLInputElement>(null);
   const [dataCollection, setDataCollection]  = useLocalStorage<MarsRoverData[]>('Mars-Rover', [])
