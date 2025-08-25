@@ -6,7 +6,9 @@ const PictureOfTheDay = lazy (()=>import('./pages/PictureOfTheDay')) ;
 const ApolloLaunch = lazy (()=>import('./pages/ApolloLaunch')) ;
 const NearEarthObjects = lazy (()=>import('./pages/NearEarthObjects')) ;
 const NasaProjects = lazy (()=>import('./pages/NasaProjects')) ;
+const Worldview = lazy (()=> import('./pages/NASAWorldview'));
 import ErrorBoundary from './components/ErrorBoundary';
+const Page404 = lazy(()=> import('./pages/404'));
 
 function App() {
   return (
@@ -34,9 +36,13 @@ function App() {
               <Suspense fallback={<Spinner/>}>
                 <NasaProjects/>
               </Suspense>}/>
+              <Route path="*" element={
+              <Suspense fallback={<Spinner/>}>
+                <Page404/>
+              </Suspense>}/>
           </Routes>
         </BrowserRouter>
-      </ErrorBoundary>
+        </ErrorBoundary>
     </>
   )
 }

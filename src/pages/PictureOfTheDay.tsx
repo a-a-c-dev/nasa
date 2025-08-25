@@ -34,16 +34,11 @@ function PictureOfTheDay() {
       try{
         
         const res = await fetch(`/.netlify/functions/getPictureOfTheDayData?startDate=${startDate}&endDate=${endDate}`)
-        console.log('1',res);
         if(!res.ok) {
-          console.log('2',res);
           setError('something happend');
           return
         }     
-                console.log(res.body, '3')
-
         const data = await res.json();
-        console.log(data, '4')
         if(data.error){
           console.log(data.error)
           setError(()=>data.error);
