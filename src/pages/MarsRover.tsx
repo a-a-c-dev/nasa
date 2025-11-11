@@ -43,11 +43,10 @@ function MarsRover() {
   const prev = useCallback(():void => {
     setCurrentIndex((currentIndex - 1 + dataCollection.length) % dataCollection.length);
   } ,[currentIndex, dataCollection]);
-  const fetchData = useMemo(()=> async () => {
+  const fetchData = useCallback(()=> async () => {
     setLoading(()=>true);
     try{
       const res = await fetch(`/getMarsRoverData?date=${startDate}`);
-      console.log(res )
        if(!res.ok) {
           setError(()=>"API error occurred");
         }     

@@ -1,4 +1,4 @@
-import {useState, useEffect ,useMemo, useRef ,Suspense,lazy } from 'react';
+import {useState, useEffect ,useMemo, useRef ,Suspense,lazy, useCallback } from 'react';
 import {Header,Navigation,Error,Spinner,ScrollBTN, NotFound,Calendar,InputText,ErrorBanner} from '../components/index';
 import useLocalStorage from '../hooks/useLocalStorage';
 const InformationContainer = lazy (()=>import('../components/InformationContainer')) ;
@@ -29,7 +29,7 @@ function PictureOfTheDay() {
     const [loading, setLoading] = useState<boolean|null>(null);
     const [error, setError] = useState<string|null>(null);
     const filteredData:PictureOfTheDayProps[] = dataCollection.filter((value:PictureOfTheDayProps) => value.title.toLowerCase().includes(autoSearch.toLowerCase()));
-    const fetchData = useMemo(()=> async () => {
+    const fetchData = useCallback(()=> async () => {
       setLoading(()=>true)
       try{
         
@@ -48,20 +48,18 @@ function PictureOfTheDay() {
         
       }
       catch(err:any){
-        setError(()=>err);
         console.error(err)
+        setError(()=>err);
       }
       finally{
           setLoading(()=>false)
       }
-      
     },[startDate]);
     useEffect(()=>{
       if(!dataCollection.length || startDate!==dataCollection[dataCollection.length-1]?.date){
         fetchData()
       }
     },[dataCollection.length,startDate])
-
     if(loading && !dataCollection.length){
       return(
         <>
@@ -72,18 +70,18 @@ function PictureOfTheDay() {
           <Spinner/>
         </>
       )
-    }
-    
-    if(error)return (<>
-    <ErrorBanner/>
-    <Error error={error}/>
-    </>)
+    }   
+    if(error)return (
+      <>
+        <ErrorBanner/>
+        <Error error={error}/>
+      </>
+    )
   
     return (
       <>
       <Navigation/>   
       <ErrorBanner/>
-
       <Header text='NASA picture of the day'/>
         <div className='navigation-container'>
           <div className='box calendar'>

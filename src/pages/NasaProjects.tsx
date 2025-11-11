@@ -1,4 +1,4 @@
-import{useState,useMemo,useEffect} from 'react';
+import{useState,useMemo,useEffect, useCallback} from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import {Header,Navigation,Error,Spinner,ScrollBTN,TextContainer,Modal, ModalOverlay} from '../components/index';
 
@@ -28,13 +28,12 @@ interface Project{
 }
 
 function NasaProjects() {
-
     const [dataCollection, setDataCollection]  = useLocalStorage<Project[]>('NASA-Project', [])
     const [loading, setLoading] = useState<boolean|null>(null);
     const [error, setError] = useState<string|null>(null);
     
   
-    const fetchData = useMemo(()=> async () => {
+    const fetchData = useCallback(()=> async () => {
       setLoading(true)
         try{
           const res = await fetch('/getNasaProjectsData')
@@ -55,14 +54,13 @@ function NasaProjects() {
           setLoading(false)
         }
         
-      },[]);
+      },[dataCollection]);
     useEffect(()=>{
       if(!(dataCollection.length>0)){
         fetchData()
       }
       },[dataCollection.length])
       if(error)return <Error error={error}/>
-
       if(loading && dataCollection.length===0){
         return(
           <>
@@ -74,7 +72,7 @@ function NasaProjects() {
         )
       }
    return( 
-    <>
+      <>
         <Navigation/>
         <Header text='NASA Projects'/>
         <div className='project-container'>
@@ -89,7 +87,6 @@ function NasaProjects() {
                     <h2 className='project-title'>{project?.title}</h2>
                     <p  className='project-org'>{project?.leadOrganization?.organizationName ?project?.leadOrganization?.organizationName : project?.otherOrganizations?.organizationName ?project?.otherOrganizations?.organizationName : 'NASA' }</p>
                     <p  className='project-desc'>{project.benefits}</p>
-                    {/*<TextContainer text={project?.description}/>*/ }
                   </div>
                   
                   }
@@ -161,7 +158,7 @@ function NasaProjects() {
             })}
             </div>
             <ScrollBTN/>
-        </>
+      </>
     )
 }
 

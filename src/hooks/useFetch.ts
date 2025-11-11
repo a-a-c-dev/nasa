@@ -1,4 +1,4 @@
-import {useEffect,useState, useMemo} from 'react';
+import {useEffect,useState, useCallback} from 'react';
 import useLocalStorage from './useLocalStorage';
 
 function useFetch<T>(url:string,storageKey:string):{
@@ -9,7 +9,7 @@ function useFetch<T>(url:string,storageKey:string):{
     const [data, setData] = useLocalStorage<T|any>(storageKey, null);
     const [loading, setLoading] = useState<boolean|null>(null);
     const [error, setError] = useState<string|null>(null);
-    const fetchData = useMemo(()=> async () => {
+    const fetchData = useCallback(()=> async () => {
         setLoading(true)
         try{
           const res = await fetch(url)

@@ -16,19 +16,19 @@ function App() {
         <BrowserRouter>
         <ErrorBanner/>
           <Routes>
-            <Route path='PictureOfTheDay' element={     
-              <Suspense  fallback={<Spinner/>}>
-                <PictureOfTheDay />      
-              </Suspense>}/>
-            <Route path='MarsRover' element={
-              <Suspense  fallback={<Spinner/>}>
-                <MarsRover />      
-              </Suspense>} />
-            <Route index  element={
+          <Route index  element={
               <Suspense  fallback={<Spinner/>}>
                 <ApolloLaunch />      
               </Suspense>} />
-            <Route path='NearEarthObjects' element={
+            <Route path='pictureOfTheDay' element={     
+              <Suspense  fallback={<Spinner/>}>
+                <PictureOfTheDay />      
+              </Suspense>}/>
+            <Route path='marsRover' element={
+              <Suspense  fallback={<Spinner/>}>
+                <MarsRover />      
+              </Suspense>} />
+            <Route path='nearEarthObjects' element={
               <Suspense fallback={<Spinner/>}>
                 <NearEarthObjects/>
               </Suspense>}/>
