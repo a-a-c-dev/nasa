@@ -1,5 +1,5 @@
 import {Suspense,lazy } from 'react';
-import {Spinner} from './components/index';
+import {Spinner, ErrorBanner} from './components/index';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 const MarsRover = lazy (()=>import('./pages/MarsRover')) ;
 const PictureOfTheDay = lazy (()=>import('./pages/PictureOfTheDay')) ;
@@ -14,8 +14,9 @@ function App() {
     <>
       <ErrorBoundary>
         <BrowserRouter>
+        <ErrorBanner/>
           <Routes>
-            <Route index element={     
+            <Route path='PictureOfTheDay' element={     
               <Suspense  fallback={<Spinner/>}>
                 <PictureOfTheDay />      
               </Suspense>}/>
@@ -23,7 +24,7 @@ function App() {
               <Suspense  fallback={<Spinner/>}>
                 <MarsRover />      
               </Suspense>} />
-            <Route path='ApolloLaunch' element={
+            <Route index  element={
               <Suspense  fallback={<Spinner/>}>
                 <ApolloLaunch />      
               </Suspense>} />

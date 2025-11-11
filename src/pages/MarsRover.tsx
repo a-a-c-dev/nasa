@@ -47,9 +47,13 @@ function MarsRover() {
     setLoading(()=>true);
     try{
       const res = await fetch(`/getMarsRoverData?date=${startDate}`);
+      console.log(res )
+       if(!res.ok) {
+          setError(()=>"API error occurred");
+        }     
       const data = await res.json();
       if(data.error){
-        setError(data.error);
+        setError(()=>"API error occurred");
       }
       else if(Object.keys(data).length>0){
         const images = Object.values<MarsRoverData[]>(data)[0].slice(0,30).reverse();
@@ -59,8 +63,8 @@ function MarsRover() {
       if(data.photos.length === 0)setError('There is a problem with this specific date, please try with another date' );
     }
     catch(err:any){
-        setError(()=>err);
         console.error(err)
+        setError(()=>"API error occurred");
     }
     finally{
         setLoading(false)
@@ -80,6 +84,15 @@ function MarsRover() {
           <Header text='Mars Rover'/>
           <p>please wait while the data is loading</p>
           <Spinner/>
+        </>
+      )
+    }
+    if(error){
+      return(
+        <>
+          <Navigation/>
+          <Header text='Mars Rover'/>
+          <Error error={error}/>
         </>
       )
     }

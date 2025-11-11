@@ -11,6 +11,8 @@ import ScrollBTN from "./ScrollBTN";
 import { Spinner } from "./Spinner";
 import TextContainer from "./TextContainer";
 import InputText from "./InputText";
+import ErrorBanner from './ErrorBanner';
+
 
 export{
     Calendar,
@@ -25,5 +27,6 @@ export{
     ScrollBTN,
     Spinner,
     TextContainer,
-    InputText
+    InputText,
+    ErrorBanner
 }

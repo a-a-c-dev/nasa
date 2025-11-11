@@ -20,7 +20,8 @@ interface Images{
     0:{
       date_created:string,
       title:string,
-      description:string
+      description:string,
+      nasa_id:string
     }
     
   }
@@ -52,7 +53,7 @@ function ApolloLaunch() {
             {images && images?.map((value:Images) => (
                 value?.links?(
                          <ModalOverlay
-                          key={value.data[0].title}
+                          key={`${value.data[0].title} - ${value.data[0].nasa_id}`}
                           toggle={show =>         
                           <div className='card' onDoubleClick={()=> show()} >
                               <ImageContainer imageSrc={value?.links[0]?.href} imagedesc={value?.data[0]?.description}/>

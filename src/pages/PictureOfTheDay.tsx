@@ -1,5 +1,5 @@
 import {useState, useEffect ,useMemo, useRef ,Suspense,lazy } from 'react';
-import {Header,Navigation,Error,Spinner,ScrollBTN, NotFound,Calendar,InputText} from '../components/index';
+import {Header,Navigation,Error,Spinner,ScrollBTN, NotFound,Calendar,InputText,ErrorBanner} from '../components/index';
 import useLocalStorage from '../hooks/useLocalStorage';
 const InformationContainer = lazy (()=>import('../components/InformationContainer')) ;
 
@@ -35,12 +35,10 @@ function PictureOfTheDay() {
         
         const res = await fetch(`/.netlify/functions/getPictureOfTheDayData?startDate=${startDate}&endDate=${endDate}`)
         if(!res.ok) {
-          setError('something happend');
-          return
+          setError(()=>"API error occurred");
         }     
         const data = await res.json();
         if(data.error){
-          console.log(data.error)
           setError(()=>data.error);
           
         }
@@ -68,6 +66,7 @@ function PictureOfTheDay() {
       return(
         <>
           <Navigation/>
+          <ErrorBanner/>
           <Header text='NASA picture of the day'/>
           <p>please wait while the data is loading</p>
           <Spinner/>
@@ -75,11 +74,16 @@ function PictureOfTheDay() {
       )
     }
     
-    if(error)return <Error error={error}/>
+    if(error)return (<>
+    <ErrorBanner/>
+    <Error error={error}/>
+    </>)
   
     return (
       <>
-      <Navigation/>
+      <Navigation/>   
+      <ErrorBanner/>
+
       <Header text='NASA picture of the day'/>
         <div className='navigation-container'>
           <div className='box calendar'>
